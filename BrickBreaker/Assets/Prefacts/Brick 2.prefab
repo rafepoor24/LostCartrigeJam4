@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5282413621221254827}
   - component: {fileID: 9179491005160710071}
   m_Layer: 0
-  m_Name: Brick
+  m_Name: Brick 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c37c570107dea254ab68a8fbe10e8f60, type: 2}
+  - {fileID: 2100000, guid: f684fc458db11d7458be661dd079f811, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cd7d93dc6fef5d44bdb735c022364ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hits: 1
-  points: 100
+  hits: 2
+  points: 200
   rotator: {x: 45, y: 0, z: 0}
   materialHits: {fileID: 2100000, guid: 1d0233e662f80204ea8833cd520d3c39, type: 2}

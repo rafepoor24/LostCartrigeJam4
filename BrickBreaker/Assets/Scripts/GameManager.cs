@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI ballText;
     public TextMeshProUGUI levelText;
-    public TextMeshProUGUI highScoreText;
+    public TextMeshProUGUI highscoreText;
     
 
     public static GameManager Instance { get; private set; }    
@@ -61,7 +61,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Instance = this;
-        SwitchState(State.MENU);   
+        SwitchState(State.MENU);
+   
     }
 
     // Update is called once per frame
@@ -125,8 +126,8 @@ public class GameManager : MonoBehaviour
         { 
            case State.MENU:
                 Cursor.visible = true;
+                highscoreText.text = "HIGHSCORE: " + PlayerPrefs.GetInt("highscore");
                 panelMenu.SetActive(true);
-                highScoreText.text = "HIGHSCORE: " + PlayerPrefs.GetInt("highscore");
                 break;
                 case State.INIT:
                 Cursor.visible = false;
@@ -163,9 +164,9 @@ public class GameManager : MonoBehaviour
                 }
                 break;
             case State.GAMEOVER:
-                if (Score > PlayerPrefs.GetInt("Highscore"))
+                if (Score > PlayerPrefs.GetInt("highscore"))
                 {
-                    PlayerPrefs.GetInt("Highscore",Score);
+                    PlayerPrefs.SetInt("highscore",Score);
                 }
                 panelGameOver.SetActive(true);
                 

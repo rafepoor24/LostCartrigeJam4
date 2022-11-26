@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
@@ -9,7 +10,9 @@ public class Ball : MonoBehaviour
     private Rigidbody rbBall;
     private float _speed=20f;
     private Vector3 _velocity;
-    Renderer _renderer;
+    Renderer _renderer; 
+    private AudioSource ballAudio;
+    public AudioClip crash;
 
 
 
@@ -19,6 +22,7 @@ public class Ball : MonoBehaviour
        
         _renderer=GetComponent<Renderer>();
         Invoke("Launch", 0.9f);
+        ballAudio=GetComponent<AudioSource>();  
         
     }
     void Launch()
@@ -39,5 +43,9 @@ public class Ball : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         rbBall.velocity = Vector3.Reflect(_velocity, collision.contacts[0].normal);
+        ballAudio.PlayOneShot(crash, 0.5f);
     }
+    
+
+    
 }

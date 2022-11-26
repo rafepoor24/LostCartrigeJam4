@@ -19,7 +19,8 @@ public class GameManager : MonoBehaviour
 
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI ballText;
-    public TextMeshProUGUI livesText;
+    public TextMeshProUGUI levelText;
+    public TextMeshProUGUI highScoreText;
     
 
     public static GameManager Instance { get; private set; }    
@@ -27,7 +28,7 @@ public class GameManager : MonoBehaviour
     State state;
     GameObject _currentBall;
     GameObject _currentLevel;
-    bool _isSwitchingState;
+     bool _isSwitchingState;
 
     private int _score;
     public int Score
@@ -41,13 +42,16 @@ public class GameManager : MonoBehaviour
     public int Level
     {
         get { return _level; }
-        set { _level = value; }
+        set { _level = value;levelText.text = "LEVEL: " + _level; }
+       
     }
     private int _balls;
     public int Balls
     {
         get { return _balls; }
-        set { _balls = value; }
+        set { _balls = value;
+            ballText.text = "BALLS: " + Balls;
+        }
     }
 
     public void PlayClicked()
@@ -57,7 +61,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Instance = this;
-        SwitchState(State.MENU);    
+        SwitchState(State.MENU);   
     }
 
     // Update is called once per frame
@@ -79,6 +83,10 @@ public class GameManager : MonoBehaviour
                         SwitchState(State.GAMEOVER);
                     }
                 }
+                if (_currentLevel !=null && _currentLevel.transform.childCount==0 && !_isSwitchingState)
+                {
+                    SwitchState(State.LEVELCOMPLETED);
+                }
                 break;
             case State.LEVELCOMPLETED:
 
@@ -86,6 +94,10 @@ public class GameManager : MonoBehaviour
             case State.LOADLEVEL:
                 break;
             case State.GAMEOVER:
+                if (Input.anyKeyDown)
+                {
+                    SwitchState(State.MENU);
+                }
                 break;
 
         }
@@ -105,27 +117,38 @@ public class GameManager : MonoBehaviour
         EndState();
         state = newState;
         BeginState(newState);
-        _isSwitchingState=false;    
+        _isSwitchingState = false;    
     }
      void BeginState(State newState)
     {
         switch (newState)
         { 
            case State.MENU:
+                Cursor.visible = true;
                 panelMenu.SetActive(true);
+                highScoreText.text = "HIGHSCORE: " + PlayerPrefs.GetInt("highscore");
                 break;
                 case State.INIT:
+                Cursor.visible = false;
                 panelPlay.SetActive(true);
                 Score = 0;
                 Level = 0;
                 Balls = 3;
+                if(_currentLevel != null)
+                {
+                    Destroy(_currentLevel);
+                }
                 Instantiate(PlayerPrefact);
                 SwitchState(State.LOADLEVEL);
                 break;
             case State.PLAY:
                 break;
             case State.LEVELCOMPLETED:
+                Destroy(_currentBall);
+                Destroy(_currentLevel);
+                Level++;
                 panelLevelComplete.SetActive(true);
+                SwitchState(State.LOADLEVEL,2f);
 
               break;
             case State.LOADLEVEL:
@@ -140,6 +163,10 @@ public class GameManager : MonoBehaviour
                 }
                 break;
             case State.GAMEOVER:
+                if (Score > PlayerPrefs.GetInt("Highscore"))
+                {
+                    PlayerPrefs.GetInt("Highscore",Score);
+                }
                 panelGameOver.SetActive(true);
                 
                 break;  

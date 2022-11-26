@@ -9,18 +9,32 @@ public class Ball : MonoBehaviour
     private Rigidbody rbBall;
     private float _speed=20f;
     private Vector3 _velocity;
+    Renderer _renderer;
+
 
 
     void Start()
     {
         rbBall=GetComponent<Rigidbody>();   
-        rbBall.velocity = Vector3.down*_speed;
+       
+        _renderer=GetComponent<Renderer>();
+        Invoke("Launch", 0.9f);
         
     }
+    void Launch()
+    {
+        rbBall.velocity = Vector3.up * _speed;
+    }
+
     private void FixedUpdate()
     {
         rbBall.velocity = rbBall.velocity.normalized * _speed;
         _velocity = rbBall.velocity;
+        if (!_renderer.isVisible)
+        {
+            GameManager.Instance.Balls--;
+            Destroy(gameObject);
+        }
     }
     private void OnCollisionEnter(Collision collision)
     {
